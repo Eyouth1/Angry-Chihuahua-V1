@@ -19,21 +19,25 @@ jobs:
           cd ~/JUCE_Install
           curl -L https://github.com/juce-framework/JUCE/releases/download/8.0.13/JUCE-8.0.13-osx.zip -o JUCE.zip
           unzip -q JUCE.zip
-          # Handle both extraction patterns (JUCE-8.0.13 or JUCE)
-          if [ -d "JUCE-8.0.13" ]; then
-            mv JUCE-8.0.13 JUCE_tmp
-            rm -rf JUCE
-            mv JUCE_tmp JUCE
-          fi
+          ls -la
           rm JUCE.zip
 
       - name: Generate Xcode Project
         run: |
-          JUCE_PATH="$HOME/JUCE_Install/JUCE"
-          chmod +x "$JUCE_PATH/Projucer"
-          "$JUCE_PATH/Projucer" --set-global-search-path osx "$JUCE_PATH/modules"
+          # Find the JUCE root directory (could be JUCE-8.0.13 or JUCE)
+          if [ -d "$HOME/JUCE_Install/JUCE-8.0.13" ]; then
+            JUCE_ROOT="$HOME/JUCE_Install/JUCE-8.0.13"
+          else
+            JUCE_ROOT="$HOME/JUCE_Install/JUCE"
+          fi
+          PROJUCER="$JUCE_ROOT/Projucer"
+          echo "Using JUCE at: $JUCE_ROOT"
+          echo "Projucer at: $PROJUCER"
+          ls -la "$JUCE_ROOT" | head -20
+          chmod +x "$PROJUCER"
+          "$PROJUCER" --set-global-search-path osx "$JUCE_ROOT/modules"
           cd "${{ github.workspace }}/Angry Chihuahua V1"
-          "$JUCE_PATH/Projucer" --resave "Angry Chihuahua V1.jucer"
+          "$PROJUCER" --resave "Angry Chihuahua V1.jucer"
 
       - name: Build macOS VST3
         run: |
@@ -69,9 +73,19 @@ jobs:
       - name: Generate Visual Studio Project
         shell: pwsh
         run: |
-          & "C:\JUCE\Projucer" --set-global-search-path windows "C:\JUCE\modules"
+          # Find JUCE root
+          if (Test-Path "C:\JUCE-8.0.13") {
+            $JUCE_ROOT = "C:\JUCE-8.0.13"
+          } else {
+            $JUCE_ROOT = "C:\JUCE"
+          }
+          $PROJUCER = "$JUCE_ROOT\Projucer.exe"
+          Write-Host "Using JUCE at: $JUCE_ROOT"
+          Write-Host "Projucer at: $PROJUCER"
+          Get-ChildItem -Path $JUCE_ROOT | Select-Object -First 10
+          & $PROJUCER --set-global-search-path windows "$JUCE_ROOT\modules"
           cd "${{ github.workspace }}\Angry Chihuahua V1"
-          & "C:\JUCE\Projucer" --resave "Angry Chihuahua V1.jucer"
+          & $PROJUCER --resave "Angry Chihuahua V1.jucer"
 
       - name: Build Windows VST3
         shell: cmd
