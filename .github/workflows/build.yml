@@ -19,9 +19,12 @@ jobs:
           cd ~/JUCE_Install
           curl -L https://github.com/juce-framework/JUCE/releases/download/8.0.13/JUCE-8.0.13-osx.zip -o JUCE.zip
           unzip -q JUCE.zip
-          ls -la | grep JUCE
-          rm -rf JUCE
-          mv JUCE-8.0.13 JUCE
+          # Handle both extraction patterns (JUCE-8.0.13 or JUCE)
+          if [ -d "JUCE-8.0.13" ]; then
+            mv JUCE-8.0.13 JUCE_tmp
+            rm -rf JUCE
+            mv JUCE_tmp JUCE
+          fi
           rm JUCE.zip
 
       - name: Generate Xcode Project
@@ -57,11 +60,11 @@ jobs:
           cd C:\
           Invoke-WebRequest -Uri "https://github.com/juce-framework/JUCE/releases/download/8.0.13/JUCE-8.0.13-windows.zip" -OutFile JUCE.zip
           Expand-Archive -Path JUCE.zip -DestinationPath .
-          Get-ChildItem C:\ -Name | Select-String "JUCE"
-          if (Test-Path "JUCE") { Remove-Item -Path "JUCE" -Recurse -Force }
-          Rename-Item -Path "JUCE-8.0.13" -NewName "JUCE" -Force
+          if (Test-Path "JUCE-8.0.13") {
+            if (Test-Path "JUCE") { Remove-Item -Path "JUCE" -Recurse -Force }
+            Rename-Item -Path "JUCE-8.0.13" -NewName "JUCE" -Force
+          }
           Remove-Item JUCE.zip
-          Get-ChildItem C:\JUCE -Name | Select-Object -First 5
 
       - name: Generate Visual Studio Project
         shell: pwsh
