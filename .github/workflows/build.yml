@@ -18,9 +18,11 @@ jobs:
           cd /Applications
           curl -L https://github.com/juce-framework/JUCE/releases/download/8.0.13/JUCE-8.0.13-osx.zip -o JUCE.zip
           unzip -q JUCE.zip
+          ls -la | grep JUCE
           rm -rf JUCE
           mv JUCE-8.0.13 JUCE
           rm JUCE.zip
+          ls -la JUCE | head -5
 
       - name: Generate Xcode Project
         run: |
@@ -46,7 +48,7 @@ jobs:
       - uses: actions/checkout@v4.1.7
 
       - name: Add MSBuild to PATH
-        uses: microsoft/setup-msbuild@v2.0
+        uses: microsoft/setup-msbuild@v2
 
       - name: Install JUCE
         shell: pwsh
@@ -54,9 +56,11 @@ jobs:
           cd C:\
           Invoke-WebRequest -Uri "https://github.com/juce-framework/JUCE/releases/download/8.0.13/JUCE-8.0.13-windows.zip" -OutFile JUCE.zip
           Expand-Archive -Path JUCE.zip -DestinationPath .
+          Get-ChildItem C:\ -Name | Select-String "JUCE"
           if (Test-Path "JUCE") { Remove-Item -Path "JUCE" -Recurse -Force }
           Rename-Item -Path "JUCE-8.0.13" -NewName "JUCE" -Force
           Remove-Item JUCE.zip
+          Get-ChildItem C:\JUCE -Name | Select-Object -First 5
 
       - name: Generate Visual Studio Project
         shell: pwsh
