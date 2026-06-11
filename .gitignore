@@ -1,0 +1,43 @@
+# Build artifacts
+Builds/
+build/
+*.o
+*.a
+*.so
+*.dylib
+*.dll
+*.exe
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# User files
+*.user
+*.swp
+*.swo
+
+# Xcode
+*.xcworkspace
+xcuserdata/
+*.xcodeproj/xcuserdata
+DerivedData/
+
+# CMake
+cmake_install.cmake
+CMakeCache.txt
+CMakeFiles/
+
+# Temporary
+*.tmp
+*.log
+
+# Dependencies (optional - remove if you want to commit JUCE)
+# JuceLibraryCode/ — keep this, it's generated but needed
+
+# Projucer
+JuceLibraryCode/include_juce_*
