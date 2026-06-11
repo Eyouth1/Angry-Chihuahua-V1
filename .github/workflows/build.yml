@@ -19,16 +19,23 @@ jobs:
           unzip -q JUCE.zip
           rm JUCE.zip
 
+      - name: Generate Xcode Project
+        run: |
+          chmod +x /Applications/JUCE/Projucer
+          /Applications/JUCE/Projucer --set-global-search-path osx "/Applications/JUCE/modules"
+          cd "${{ github.workspace }}/Angry Chihuahua V1"
+          /Applications/JUCE/Projucer --resave "Angry Chihuahua V1.jucer"
+
       - name: Build macOS VST3
         run: |
-          /Applications/JUCE/Projucer --set-global-search-path osx "/Applications/JUCE/modules" || true
+          cd "${{ github.workspace }}/Angry Chihuahua V1"
           xcodebuild -project "Builds/MacOSX/Angry Chihuahua V1.xcodeproj" -scheme "Angry Chihuahua V1" -configuration Release
 
       - name: Upload macOS VST3
         uses: actions/upload-artifact@v4
         with:
           name: Angry-Chihuahua-V1-macOS
-          path: Builds/MacOSX/build/Release/VST3/Angry*
+          path: "${{ github.workspace }}/Angry Chihuahua V1/Builds/MacOSX/build/Release/VST3/Angry*"
 
   build-windows:
     runs-on: windows-latest
@@ -46,9 +53,17 @@ jobs:
           Expand-Archive -Path JUCE.zip -DestinationPath .
           Remove-Item JUCE.zip
 
+      - name: Generate Visual Studio Project
+        shell: pwsh
+        run: |
+          & "C:\JUCE\Projucer" --set-global-search-path windows "C:\JUCE\modules"
+          cd "${{ github.workspace }}\Angry Chihuahua V1"
+          & "C:\JUCE\Projucer" --resave "Angry Chihuahua V1.jucer"
+
       - name: Build Windows VST3
         shell: cmd
         run: |
+          cd "${{ github.workspace }}\Angry Chihuahua V1"
           "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat" && ^
           msbuild "Builds\VisualStudio2022\Angry Chihuahua V1.sln" /p:Configuration=Release /p:Platform=x64
 
@@ -56,4 +71,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Angry-Chihuahua-V1-Windows
-          path: Builds/VisualStudio2022/x64/Release/VST3/Angry*
+          path: "${{ github.workspace }}\\Angry Chihuahua V1\\Builds\\VisualStudio2022\\x64\\Release\\VST3\\Angry*"
