@@ -18,6 +18,7 @@ jobs:
           cd /Applications
           curl -L https://github.com/juce-framework/JUCE/releases/download/8.0.13/JUCE-8.0.13-osx.zip -o JUCE.zip
           unzip -q JUCE.zip
+          rm -rf JUCE
           mv JUCE-8.0.13 JUCE
           rm JUCE.zip
 
@@ -53,6 +54,7 @@ jobs:
           cd C:\
           Invoke-WebRequest -Uri "https://github.com/juce-framework/JUCE/releases/download/8.0.13/JUCE-8.0.13-windows.zip" -OutFile JUCE.zip
           Expand-Archive -Path JUCE.zip -DestinationPath .
+          if (Test-Path "JUCE") { Remove-Item -Path "JUCE" -Recurse -Force }
           Rename-Item -Path "JUCE-8.0.13" -NewName "JUCE" -Force
           Remove-Item JUCE.zip
 
