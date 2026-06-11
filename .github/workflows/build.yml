@@ -21,7 +21,6 @@ jobs:
 
       - name: Build macOS VST3
         run: |
-          cd "Angry Chihuahua V1"
           /Applications/JUCE/Projucer --set-global-search-path osx "/Applications/JUCE/modules" || true
           xcodebuild -project "Builds/MacOSX/Angry Chihuahua V1.xcodeproj" -scheme "Angry Chihuahua V1" -configuration Release
 
@@ -29,7 +28,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Angry-Chihuahua-V1-macOS
-          path: Angry Chihuahua V1/Builds/MacOSX/build/Release/VST3/Angry*
+          path: Builds/MacOSX/build/Release/VST3/Angry*
 
   build-windows:
     runs-on: windows-latest
@@ -50,7 +49,6 @@ jobs:
       - name: Build Windows VST3
         shell: cmd
         run: |
-          cd "Angry Chihuahua V1"
           "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat" && ^
           msbuild "Builds\VisualStudio2022\Angry Chihuahua V1.sln" /p:Configuration=Release /p:Platform=x64
 
@@ -58,4 +56,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Angry-Chihuahua-V1-Windows
-          path: Angry Chihuahua V1/Builds/VisualStudio2022/x64/Release/VST3/Angry*
+          path: Builds/VisualStudio2022/x64/Release/VST3/Angry*
