@@ -15,21 +15,22 @@ jobs:
 
       - name: Install JUCE
         run: |
-          cd /Applications
+          mkdir -p ~/JUCE_Install
+          cd ~/JUCE_Install
           curl -L https://github.com/juce-framework/JUCE/releases/download/8.0.13/JUCE-8.0.13-osx.zip -o JUCE.zip
           unzip -q JUCE.zip
           ls -la | grep JUCE
           rm -rf JUCE
           mv JUCE-8.0.13 JUCE
           rm JUCE.zip
-          ls -la JUCE | head -5
 
       - name: Generate Xcode Project
         run: |
-          chmod +x /Applications/JUCE/Projucer
-          /Applications/JUCE/Projucer --set-global-search-path osx "/Applications/JUCE/modules"
+          JUCE_PATH="$HOME/JUCE_Install/JUCE"
+          chmod +x "$JUCE_PATH/Projucer"
+          "$JUCE_PATH/Projucer" --set-global-search-path osx "$JUCE_PATH/modules"
           cd "${{ github.workspace }}/Angry Chihuahua V1"
-          /Applications/JUCE/Projucer --resave "Angry Chihuahua V1.jucer"
+          "$JUCE_PATH/Projucer" --resave "Angry Chihuahua V1.jucer"
 
       - name: Build macOS VST3
         run: |
