@@ -1,3 +1,4 @@
+# Build VST3 plugins for macOS and Windows
 name: Build VST3 (macOS & Windows)
 
 on:
