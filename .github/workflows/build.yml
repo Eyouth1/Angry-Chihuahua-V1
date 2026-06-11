@@ -1,0 +1,61 @@
+name: Build VST3 (macOS & Windows)
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install JUCE
+        run: |
+          cd /Applications
+          curl -L https://github.com/juce-framework/JUCE/releases/download/8.0.13/JUCE-8.0.13-osx.zip -o JUCE.zip
+          unzip -q JUCE.zip
+          rm JUCE.zip
+
+      - name: Build macOS VST3
+        run: |
+          cd "Angry Chihuahua V1"
+          /Applications/JUCE/Projucer --set-global-search-path osx "/Applications/JUCE/modules" || true
+          xcodebuild -project "Builds/MacOSX/Angry Chihuahua V1.xcodeproj" -scheme "Angry Chihuahua V1" -configuration Release
+
+      - name: Upload macOS VST3
+        uses: actions/upload-artifact@v3
+        with:
+          name: Angry-Chihuahua-V1-macOS
+          path: Angry Chihuahua V1/Builds/MacOSX/build/Release/VST3/Angry*
+
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Add MSBuild to PATH
+        uses: microsoft/setup-msbuild@v1.1
+
+      - name: Install JUCE
+        shell: pwsh
+        run: |
+          cd C:\
+          Invoke-WebRequest -Uri "https://github.com/juce-framework/JUCE/releases/download/8.0.13/JUCE-8.0.13-windows.zip" -OutFile JUCE.zip
+          Expand-Archive -Path JUCE.zip -DestinationPath .
+          Remove-Item JUCE.zip
+
+      - name: Build Windows VST3
+        shell: cmd
+        run: |
+          cd "Angry Chihuahua V1"
+          "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat" && ^
+          msbuild "Builds\VisualStudio2022\Angry Chihuahua V1.sln" /p:Configuration=Release /p:Platform=x64
+
+      - name: Upload Windows VST3
+        uses: actions/upload-artifact@v3
+        with:
+          name: Angry-Chihuahua-V1-Windows
+          path: Angry Chihuahua V1/Builds/VisualStudio2022/x64/Release/VST3/Angry*
