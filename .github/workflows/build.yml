@@ -37,11 +37,11 @@ jobs:
           echo "Using JUCE at: $JUCE_ROOT"
           chmod +x "$PROJUCER"
           cd "${{ github.workspace }}"
-          # Replace all JUCE module paths with absolute paths
-          sed -i '' "s|path=\"[^\"]*JUCE[^\"]*modules\"|path=\"$JUCE_ROOT/modules\"|g" "Angry Chihuahua V1.jucer"
+          # Replace all JUCE module paths with absolute paths (match any path ending in /modules)
+          sed -i '' 's|path="[^"]*modules"|path="'"$JUCE_ROOT"'/modules"|g' "Angry Chihuahua V1.jucer"
           # Verify the replacement worked
           echo "Path replacements made:"
-          grep -c "JUCE_Install" "Angry Chihuahua V1.jucer"
+          grep -c "$JUCE_ROOT" "Angry Chihuahua V1.jucer" || echo "Warning: No JUCE_ROOT paths found"
           # Check if modules directory exists
           echo "Checking for modules at: $JUCE_ROOT/modules"
           ls -la "$JUCE_ROOT/modules" | head -10
