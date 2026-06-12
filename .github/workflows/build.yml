@@ -37,8 +37,9 @@ jobs:
           echo "Using JUCE at: $JUCE_ROOT"
           chmod +x "$PROJUCER"
           cd "${{ github.workspace }}"
-          # Replace old JUCE path with new one in .jucer file
-          sed -i '' "s|/Users/trevorking/Applications/JUCE|$JUCE_ROOT|g" "Angry Chihuahua V1.jucer"
+          # Replace old JUCE paths in .jucer file
+          # macOS uses relative paths like ../../../../../../Applications/JUCE/modules
+          sed -i '' "s|../../../../../../Applications/JUCE/modules|../../../JUCE_Install/JUCE/modules|g" "Angry Chihuahua V1.jucer"
           # Now resave the project
           "$PROJUCER" --resave "Angry Chihuahua V1.jucer"
 
@@ -93,8 +94,8 @@ jobs:
           Write-Host "Using JUCE at: $JUCE_ROOT"
           Write-Host "Projucer at: $PROJUCER"
           cd "${{ github.workspace }}"
-          # Replace old JUCE path with new one in .jucer file
-          (Get-Content "Angry Chihuahua V1.jucer") -replace 'C:\\Users\\.*?\\Applications\\JUCE', $JUCE_ROOT | Set-Content "Angry Chihuahua V1.jucer"
+          # Replace old JUCE paths in .jucer file - Windows uses absolute paths like C:\JUCE\modules
+          (Get-Content "Angry Chihuahua V1.jucer") -replace 'C:\\Users\\[^\\]+\\Applications\\JUCE\\modules', "$JUCE_ROOT\modules" | Set-Content "Angry Chihuahua V1.jucer"
           & "$PROJUCER" --resave "Angry Chihuahua V1.jucer"
 
       - name: Build Windows VST3
