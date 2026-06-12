@@ -24,29 +24,11 @@ jobs:
           ls -la
           rm JUCE.zip
 
-      - name: Generate Xcode Project
+      - name: Verify Xcode Project
         run: |
-          # Find the JUCE root directory (could be JUCE-8.0.13 or JUCE)
-          if [ -d "$HOME/JUCE_Install/JUCE-8.0.13" ]; then
-            JUCE_ROOT="$HOME/JUCE_Install/JUCE-8.0.13"
-          else
-            JUCE_ROOT="$HOME/JUCE_Install/JUCE"
-          fi
-          # Projucer is inside the .app bundle on macOS
-          PROJUCER="$JUCE_ROOT/Projucer.app/Contents/MacOS/Projucer"
-          echo "Using JUCE at: $JUCE_ROOT"
-          chmod +x "$PROJUCER"
-          cd "${{ github.workspace }}"
-          # Replace all JUCE module paths with absolute paths (match any path ending in /modules)
-          sed -i '' 's|path="[^"]*modules"|path="'"$JUCE_ROOT"'/modules"|g' "Angry Chihuahua V1.jucer"
-          # Verify the replacement worked
-          echo "Path replacements made:"
-          grep -c "$JUCE_ROOT" "Angry Chihuahua V1.jucer" || echo "Warning: No JUCE_ROOT paths found"
-          # Check if modules directory exists
-          echo "Checking for modules at: $JUCE_ROOT/modules"
-          ls -la "$JUCE_ROOT/modules" | head -10
-          # Now resave the project
-          "$PROJUCER" --resave "Angry Chihuahua V1.jucer"
+          # Use the pre-generated Xcode project from the repo
+          echo "Using existing Xcode project from Builds/MacOSX/"
+          ls -la "Builds/MacOSX/Angry Chihuahua V1.xcodeproj" | head -5
 
       - name: Build macOS VST3
         run: |
@@ -81,27 +63,12 @@ jobs:
           }
           Remove-Item JUCE.zip
 
-      - name: Generate Visual Studio Project
+      - name: Verify Visual Studio Project
         shell: pwsh
         run: |
-          # Find JUCE root
-          if (Test-Path "C:\JUCE-8.0.13") {
-            $JUCE_ROOT = "C:\JUCE-8.0.13"
-          } else {
-            $JUCE_ROOT = "C:\JUCE"
-          }
-          # Try Projucer.exe first, then Projucer
-          if (Test-Path "$JUCE_ROOT\Projucer.exe") {
-            $PROJUCER = "$JUCE_ROOT\Projucer.exe"
-          } else {
-            $PROJUCER = "$JUCE_ROOT\Projucer"
-          }
-          Write-Host "Using JUCE at: $JUCE_ROOT"
-          Write-Host "Projucer at: $PROJUCER"
-          cd "${{ github.workspace }}"
-          # Replace old JUCE paths in .jucer file - Windows uses absolute paths like C:\JUCE\modules
-          (Get-Content "Angry Chihuahua V1.jucer") -replace 'C:\\Users\\[^\\]+\\Applications\\JUCE\\modules', "$JUCE_ROOT\modules" | Set-Content "Angry Chihuahua V1.jucer"
-          & "$PROJUCER" --resave "Angry Chihuahua V1.jucer"
+          # Use the pre-generated Visual Studio project from the repo
+          Write-Host "Using existing Visual Studio project from Builds/VisualStudio2022/"
+          Get-Item "Builds\VisualStudio2022\Angry Chihuahua V1.sln" | Select-Object FullName
 
       - name: Build Windows VST3
         shell: cmd
