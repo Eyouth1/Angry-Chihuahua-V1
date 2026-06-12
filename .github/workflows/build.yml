@@ -30,10 +30,10 @@ jobs:
           else
             JUCE_ROOT="$HOME/JUCE_Install/JUCE"
           fi
-          PROJUCER="$JUCE_ROOT/Projucer"
+          # Projucer is inside the .app bundle on macOS
+          PROJUCER="$JUCE_ROOT/Projucer.app/Contents/MacOS/Projucer"
           echo "Using JUCE at: $JUCE_ROOT"
           echo "Projucer at: $PROJUCER"
-          ls -la "$JUCE_ROOT" | head -20
           chmod +x "$PROJUCER"
           "$PROJUCER" --set-global-search-path osx "$JUCE_ROOT/modules"
           cd "${{ github.workspace }}/Angry Chihuahua V1"
@@ -79,13 +79,18 @@ jobs:
           } else {
             $JUCE_ROOT = "C:\JUCE"
           }
-          $PROJUCER = "$JUCE_ROOT\Projucer.exe"
+          # Try Projucer.exe first, then Projucer
+          if (Test-Path "$JUCE_ROOT\Projucer.exe") {
+            $PROJUCER = "$JUCE_ROOT\Projucer.exe"
+          } else {
+            $PROJUCER = "$JUCE_ROOT\Projucer"
+          }
           Write-Host "Using JUCE at: $JUCE_ROOT"
           Write-Host "Projucer at: $PROJUCER"
           Get-ChildItem -Path $JUCE_ROOT | Select-Object -First 10
-          & $PROJUCER --set-global-search-path windows "$JUCE_ROOT\modules"
+          & "$PROJUCER" --set-global-search-path windows "$JUCE_ROOT\modules"
           cd "${{ github.workspace }}\Angry Chihuahua V1"
-          & $PROJUCER --resave "Angry Chihuahua V1.jucer"
+          & "$PROJUCER" --resave "Angry Chihuahua V1.jucer"
 
       - name: Build Windows VST3
         shell: cmd
