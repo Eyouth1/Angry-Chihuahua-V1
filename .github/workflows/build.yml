@@ -17,25 +17,18 @@ jobs:
 
       - name: Install JUCE
         run: |
-          mkdir -p ~/JUCE_Install
-          cd ~/JUCE_Install
+          cd /Applications
           curl -L https://github.com/juce-framework/JUCE/releases/download/8.0.13/JUCE-8.0.13-osx.zip -o JUCE.zip
           unzip -q JUCE.zip
-          ls -la
+          mv JUCE-8.0.13 JUCE
           rm JUCE.zip
-
-      - name: Verify Xcode Project
-        run: |
-          # Use the pre-generated Xcode project from the repo
-          echo "Using existing Xcode project from Builds/MacOSX/"
-          ls -la "Builds/MacOSX/Angry Chihuahua V1.xcodeproj" | head -5
 
       - name: Fix JUCE paths in Xcode project
         run: |
           cd "${{ github.workspace }}"
-          JUCE_PATH="/Users/runner/JUCE_Install/JUCE"
-          # Replace hardcoded paths in the pbxproj file
-          sed -i ' "s|/Users/trevorking/Applications/JUCE|$JUCE_PATH|g" "Builds/MacOSX/Angry Chihuahua V1.xcodeproj/project.pbxproj"
+          JUCE_PATH="/Applications/JUCE"
+          sed -i '' "s|/Users/trevorking/Applications/JUCE|$JUCE_PATH|g" "Builds/MacOSX/Angry Chihuahua V1.xcodeproj/project.pbxproj"
+
       - name: Build macOS VST3
         run: |
           cd "${{ github.workspace }}"
@@ -64,22 +57,21 @@ jobs:
           Invoke-WebRequest -Uri "https://github.com/juce-framework/JUCE/releases/download/8.0.13/JUCE-8.0.13-windows.zip" -OutFile JUCE.zip
           Expand-Archive -Path JUCE.zip -DestinationPath .
           if (Test-Path "JUCE-8.0.13") {
-            if (Test-Path "JUCE") { Remove-Item -Path "JUCE" -Recurse -Force }
             Rename-Item -Path "JUCE-8.0.13" -NewName "JUCE" -Force
           }
           Remove-Item JUCE.zip
 
-      - name: Verify Visual Studio Project
+      - name: Fix JUCE paths in Visual Studio project
         shell: pwsh
         run: |
-          # Use the pre-generated Visual Studio project from the repo
-          Write-Host "Using existing Visual Studio project from Builds/VisualStudio2022/"
-          Get-Item "Builds\VisualStudio2022\Angry Chihuahua V1.sln" | Select-Object FullName
+          cd "${{ github.workspace }}"
+          $JUCE_PATH = "C:\JUCE"
+          (Get-Content "Builds\VisualStudio2022\Angry Chihuahua V1.sln") -replace "C:\\Users\\.*?\\Applications\\JUCE", $JUCE_PATH | Set-Content "Builds\VisualStudio2022\Angry Chihuahua V1.sln"
 
       - name: Build Windows VST3
         shell: cmd
         run: |
-          cd "${{ github.workspace }}\Angry Chihuahua V1"
+          cd "${{ github.workspace }}"
           "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat" && ^
           msbuild "Builds\VisualStudio2022\Angry Chihuahua V1.sln" /p:Configuration=Release /p:Platform=x64
 
