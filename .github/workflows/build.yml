@@ -37,7 +37,6 @@ jobs:
           echo "Using JUCE at: $JUCE_ROOT"
           echo "Projucer at: $PROJUCER"
           chmod +x "$PROJUCER"
-          "$PROJUCER" --set-global-search-path osx "$JUCE_ROOT/modules"
           cd "${{ github.workspace }}/Angry Chihuahua V1"
           "$PROJUCER" --resave "Angry Chihuahua V1.jucer"
 
@@ -91,8 +90,6 @@ jobs:
           }
           Write-Host "Using JUCE at: $JUCE_ROOT"
           Write-Host "Projucer at: $PROJUCER"
-          Get-ChildItem -Path $JUCE_ROOT | Select-Object -First 10
-          & "$PROJUCER" --set-global-search-path windows "$JUCE_ROOT\modules"
           cd "${{ github.workspace }}\Angry Chihuahua V1"
           & "$PROJUCER" --resave "Angry Chihuahua V1.jucer"
 
