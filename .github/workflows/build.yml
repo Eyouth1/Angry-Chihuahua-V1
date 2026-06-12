@@ -33,7 +33,10 @@ jobs:
       - name: Build macOS VST3
         run: |
           cd "${{ github.workspace }}"
-          xcodebuild -project "Builds/MacOSX/Angry Chihuahua V1.xcodeproj" -scheme "Angry Chihuahua V1" -configuration Release
+          # List available schemes
+          xcodebuild -project "Builds/MacOSX/Angry Chihuahua V1.xcodeproj" -list
+          # Build with VST3 scheme
+          xcodebuild -project "Builds/MacOSX/Angry Chihuahua V1.xcodeproj" -scheme "Angry Chihuahua V1 - VST3" -configuration Release
 
       - name: Upload macOS VST3
         uses: actions/upload-artifact@v4
