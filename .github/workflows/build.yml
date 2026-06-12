@@ -37,9 +37,10 @@ jobs:
           echo "Using JUCE at: $JUCE_ROOT"
           chmod +x "$PROJUCER"
           cd "${{ github.workspace }}"
-          # Replace old JUCE paths in .jucer file
-          # macOS uses relative paths like ../../../../../../Applications/JUCE/modules
-          sed -i '' "s|../../../../../../Applications/JUCE/modules|../../../JUCE_Install/JUCE/modules|g" "Angry Chihuahua V1.jucer"
+          # Replace all JUCE module paths with absolute paths
+          sed -i '' "s|path=\"[^\"]*JUCE[^\"]*modules\"|path=\"$JUCE_ROOT/modules\"|g" "Angry Chihuahua V1.jucer"
+          # Verify the replacement worked
+          grep -c "JUCE_Install" "Angry Chihuahua V1.jucer" || echo "Warning: path replacement may not have worked"
           # Now resave the project
           "$PROJUCER" --resave "Angry Chihuahua V1.jucer"
 
