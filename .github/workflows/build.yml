@@ -38,7 +38,7 @@ jobs:
           chmod +x "$PROJUCER"
           cd "${{ github.workspace }}"
           # Set JUCE module path and resave
-          "$PROJUCER" --set-global-search-path osx modules "$JUCE_ROOT/modules"
+          "$PROJUCER" --set-global-search-path osx "$JUCE_ROOT"
           "$PROJUCER" --resave "Angry Chihuahua V1.jucer"
 
       - name: Build macOS VST3
