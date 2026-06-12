@@ -35,9 +35,10 @@ jobs:
           # Projucer is inside the .app bundle on macOS
           PROJUCER="$JUCE_ROOT/Projucer.app/Contents/MacOS/Projucer"
           echo "Using JUCE at: $JUCE_ROOT"
-          echo "Projucer at: $PROJUCER"
           chmod +x "$PROJUCER"
           cd "${{ github.workspace }}"
+          # Set JUCE module path and resave
+          "$PROJUCER" --set-global-search-path osx modules "$JUCE_ROOT/modules"
           "$PROJUCER" --resave "Angry Chihuahua V1.jucer"
 
       - name: Build macOS VST3
