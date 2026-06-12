@@ -1,5 +1,6 @@
-# Build artifacts
-Builds/
+# Build artifacts (but keep project files)
+Builds/*/build
+Builds/*/xcuserdata
 build/
 *.o
 *.a

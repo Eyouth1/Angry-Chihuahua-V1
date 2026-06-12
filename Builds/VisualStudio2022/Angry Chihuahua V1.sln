@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio Version 17
+
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Angry Chihuahua V1 - Standalone Plugin", "Angry Chihuahua V1_StandalonePlugin.vcxproj", "{DF14A0D4-D766-B3FD-23D5-513C3BF34129}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B96F3DBB-0A90-FFE9-4153-51AD2D4C0683} = {B96F3DBB-0A90-FFE9-4153-51AD2D4C0683}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Angry Chihuahua V1 - VST3", "Angry Chihuahua V1_VST3.vcxproj", "{9B2B7A84-D11E-102C-F162-22FB543428D8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B96F3DBB-0A90-FFE9-4153-51AD2D4C0683} = {B96F3DBB-0A90-FFE9-4153-51AD2D4C0683}
+		{7E4D6B98-6A0D-BD8B-B4A2-6185D5167ECB} = {7E4D6B98-6A0D-BD8B-B4A2-6185D5167ECB}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Angry Chihuahua V1 - Shared Code", "Angry Chihuahua V1_SharedCode.vcxproj", "{B96F3DBB-0A90-FFE9-4153-51AD2D4C0683}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Angry Chihuahua V1 - VST3 Manifest Helper", "Angry Chihuahua V1_VST3ManifestHelper.vcxproj", "{7E4D6B98-6A0D-BD8B-B4A2-6185D5167ECB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9B2B7A84-D11E-102C-F162-22FB543428D8}.Debug|x64.ActiveCfg = Debug|x64
+		{9B2B7A84-D11E-102C-F162-22FB543428D8}.Debug|x64.Build.0 = Debug|x64
+		{9B2B7A84-D11E-102C-F162-22FB543428D8}.Release|x64.ActiveCfg = Release|x64
+		{9B2B7A84-D11E-102C-F162-22FB543428D8}.Release|x64.Build.0 = Release|x64
+		{DF14A0D4-D766-B3FD-23D5-513C3BF34129}.Debug|x64.ActiveCfg = Debug|x64
+		{DF14A0D4-D766-B3FD-23D5-513C3BF34129}.Debug|x64.Build.0 = Debug|x64
+		{DF14A0D4-D766-B3FD-23D5-513C3BF34129}.Release|x64.ActiveCfg = Release|x64
+		{DF14A0D4-D766-B3FD-23D5-513C3BF34129}.Release|x64.Build.0 = Release|x64
+		{B96F3DBB-0A90-FFE9-4153-51AD2D4C0683}.Debug|x64.ActiveCfg = Debug|x64
+		{B96F3DBB-0A90-FFE9-4153-51AD2D4C0683}.Debug|x64.Build.0 = Debug|x64
+		{B96F3DBB-0A90-FFE9-4153-51AD2D4C0683}.Release|x64.ActiveCfg = Release|x64
+		{B96F3DBB-0A90-FFE9-4153-51AD2D4C0683}.Release|x64.Build.0 = Release|x64
+		{7E4D6B98-6A0D-BD8B-B4A2-6185D5167ECB}.Debug|x64.ActiveCfg = Debug|Win32
+		{7E4D6B98-6A0D-BD8B-B4A2-6185D5167ECB}.Debug|x64.Build.0 = Debug|Win32
+		{7E4D6B98-6A0D-BD8B-B4A2-6185D5167ECB}.Release|x64.ActiveCfg = Release|Win32
+		{7E4D6B98-6A0D-BD8B-B4A2-6185D5167ECB}.Release|x64.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
