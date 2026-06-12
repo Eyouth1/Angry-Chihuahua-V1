@@ -30,12 +30,15 @@ jobs:
           echo "Using existing Xcode project from Builds/MacOSX/"
           ls -la "Builds/MacOSX/Angry Chihuahua V1.xcodeproj" | head -5
 
+      - name: Fix JUCE paths in Xcode project
+        run: |
+          cd "${{ github.workspace }}"
+          JUCE_PATH="/Users/runner/JUCE_Install/JUCE"
+          # Replace hardcoded paths in the pbxproj file
+          sed -i ' "s|/Users/trevorking/Applications/JUCE|$JUCE_PATH|g" "Builds/MacOSX/Angry Chihuahua V1.xcodeproj/project.pbxproj"
       - name: Build macOS VST3
         run: |
           cd "${{ github.workspace }}"
-          # List available schemes
-          xcodebuild -project "Builds/MacOSX/Angry Chihuahua V1.xcodeproj" -list
-          # Build with VST3 scheme
           xcodebuild -project "Builds/MacOSX/Angry Chihuahua V1.xcodeproj" -scheme "Angry Chihuahua V1 - VST3" -configuration Release
 
       - name: Upload macOS VST3
