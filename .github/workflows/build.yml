@@ -75,8 +75,25 @@ jobs:
           "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat" && ^
           msbuild "Builds\VisualStudio2022\Angry Chihuahua V1.sln" /p:Configuration=Release /p:Platform=x64
 
+      - name: Install Inno Setup
+        shell: pwsh
+        run: |
+          choco install innosetup -y
+
+      - name: Create Windows Installer
+        shell: cmd
+        run: |
+          cd "${{ github.workspace }}"
+          "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" /O"Builds\VisualStudio2022\x64\Release" packaging\installer.iss
+
       - name: Upload Windows VST3
         uses: actions/upload-artifact@v4
         with:
           name: Angry-Chihuahua-V1-Windows
           path: "${{ github.workspace }}\\Builds\\VisualStudio2022\\x64\\Release\\VST3\\Angry*"
+
+      - name: Upload Windows Installer EXE
+        uses: actions/upload-artifact@v4
+        with:
+          name: Angry-Chihuahua-V1-Installer
+          path: "${{ github.workspace }}\\Builds\\VisualStudio2022\\x64\\Release\\Angry-Chihuahua-V1-Windows-VST3-Installer.exe"
