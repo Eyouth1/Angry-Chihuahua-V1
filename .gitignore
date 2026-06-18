@@ -1,13 +1,24 @@
 # Build artifacts (but keep project files)
 Builds/*/build
 Builds/*/xcuserdata
+Builds/VisualStudio2022/x64/
+Builds/VisualStudio2022/Win32/
+Builds/MacOSX/build/
 build/
 *.o
+*.obj
 *.a
 *.so
 *.dylib
 *.dll
 *.exe
+*.lib
+*.pdb
+*.iobj
+*.ipdb
+*.exp
+*.res
+*.recipe
 
 # IDE
 .vscode/
@@ -16,6 +27,11 @@ build/
 *.swo
 *~
 .DS_Store
+
+# Visual Studio build artifacts
+*.tlog/
+*.tlog
+*.lastbuildstate
 
 # User files
 *.user
