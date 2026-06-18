@@ -1,11 +1,11 @@
 # Build VST3 plugins for macOS and Windows
-name: Build VST3 (macOS & Windows)
+name: Build VST3 (macOS & Windows) - DISABLED
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  # DISABLED: Use local Proxmox Windows VM for builds
+  # GitHub Actions has persistent path issues with JUCE/JuceLibraryCode
+  # Re-enable when ready to fully debug
+  workflow_dispatch:  # Only run manually if needed
 
 jobs:
   build-macos:
