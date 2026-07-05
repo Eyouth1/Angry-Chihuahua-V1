@@ -55,6 +55,3 @@ CMakeFiles/
 
 # Dependencies (optional - remove if you want to commit JUCE)
 # JuceLibraryCode/ — keep this, it's generated but needed
-
-# Projucer
-JuceLibraryCode/include_juce_*
