@@ -35,11 +35,22 @@ jobs:
           cd "${{ github.workspace }}"
           xcodebuild -project "Builds/MacOSX/Angry Chihuahua V1.xcodeproj" -scheme "Angry Chihuahua V1 - VST3" -configuration Release
 
+      - name: Build macOS AU (Logic Pro)
+        run: |
+          cd "${{ github.workspace }}"
+          xcodebuild -project "Builds/MacOSX/Angry Chihuahua V1.xcodeproj" -scheme "Angry Chihuahua V1 - AU" -configuration Release
+
       - name: Upload macOS VST3
         uses: actions/upload-artifact@v4
         with:
-          name: Angry-Chihuahua-V1-macOS
-          path: "${{ github.workspace }}/Builds/MacOSX/build/Release/VST3/Angry*"
+          name: Angry-Chihuahua-V1-macOS-VST3
+          path: "${{ github.workspace }}/Builds/MacOSX/build/Release/Angry*.vst3"
+
+      - name: Upload macOS AU
+        uses: actions/upload-artifact@v4
+        with:
+          name: Angry-Chihuahua-V1-macOS-AU
+          path: "${{ github.workspace }}/Builds/MacOSX/build/Release/Angry*.component"
 
   build-windows:
     runs-on: windows-latest
